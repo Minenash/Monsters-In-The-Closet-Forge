@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "minenash.monsters_in_the_closet.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "monsters_in_the_closet.refmap.json",
+  "mixins": [
+    "BedBlockMixin",
+    "ServerPlayerMixin"
+  ],
+  "client": [
+    "ChatListenerMixin",
+    "LocalPlayerMixin",
+    "MinecraftMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
