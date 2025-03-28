@@ -27,7 +27,7 @@ public class BedBlockMixin {
     @Unique
     private static BlockPos blockPos = null;
 
-    @Inject(method = "lambda$useWithoutItem$1",
+    @Inject(method = "lambda$useWithoutItem$2",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;displayClientMessage(Lnet/minecraft/network/chat/Component;Z)V"))
     private static void thingy(Player player, Player.BedSleepingProblem reason, CallbackInfo ci) {
         if (reason != Player.BedSleepingProblem.NOT_SAFE)
