@@ -2,6 +2,7 @@ package minenash.monsters_in_the_closet.mixin;
 
 import minenash.monsters_in_the_closet.MonstersInTheCloset;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -33,13 +34,13 @@ public class BedBlockMixin {
             return;
 
 
-        if (blockPos != null) {
+        if (blockPos != null && player.level() instanceof ServerLevel sl) {
 
             Vec3 vec3d = Vec3.atBottomCenterOf(blockPos);
-            List<Monster> list = player.level().getEntitiesOfClass(Monster.class,
+            List<Monster> list = sl.getEntitiesOfClass(Monster.class,
                 new AABB(vec3d.x() - 8.0D, vec3d.y() - 5.0D, vec3d.z() - 8.0D, vec3d.x() + 8.0D,
                         vec3d.y() + 5.0D, vec3d.z() + 8.0D),
-                (hostileEntity) -> hostileEntity.isPreventingPlayerRest(player)
+                (hostileEntity) -> hostileEntity.isPreventingPlayerRest(sl, player)
             );
 
             if (!list.isEmpty()) {

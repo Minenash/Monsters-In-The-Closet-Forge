@@ -32,8 +32,7 @@ public class ChatListenerMixin {
         List<Monster> list = minecraft.level.getEntitiesOfClass(
                 Monster.class,
                 new AABB(vec3d.x - 8.0D, vec3d.y - 5.0D, vec3d.z - 8.0D, vec3d.x + 8.0D, vec3d.y + 5.0D,
-                        vec3d.z + 8.0D),
-                hostileEntity -> hostileEntity.isPreventingPlayerRest(minecraft.player));
+                        vec3d.z + 8.0D));
 
         if (!list.isEmpty()) {
             MonstersInTheCloset.duration = 60;
