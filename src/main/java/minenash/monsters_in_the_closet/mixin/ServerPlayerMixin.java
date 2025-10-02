@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Entity {
-    @Shadow public abstract ServerLevel serverLevel();
+    @Shadow public abstract @NotNull ServerLevel level();
 
     public ServerPlayerMixin(EntityType<?> type, Level level) {
         super(type, level);
@@ -34,14 +35,14 @@ public abstract class ServerPlayerMixin extends Entity {
     @Inject(method = "startSleepInBed", at = @At("RETURN"))
     public void highlightMobs(BlockPos pos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> info) {
         Optional<Player.BedSleepingProblem> reason = info.getReturnValue().left();
-        if (serverLevel() != null && reason.isPresent() && reason.get() == Player.BedSleepingProblem.NOT_SAFE) {
+        if (reason.isPresent() && reason.get() == Player.BedSleepingProblem.NOT_SAFE) {
 
             Vec3 vec3d = Vec3.atBottomCenterOf(pos);
-            List<Monster> list = serverLevel().getEntitiesOfClass(
+            List<Monster> list = level().getEntitiesOfClass(
                     Monster.class,
                     new AABB(vec3d.x - 8.0D, vec3d.y - 5.0D, vec3d.z - 8.0D, vec3d.x + 8.0D, vec3d.y + 5.0D,
                             vec3d.z + 8.0D),
-                    (hostileEntity) -> hostileEntity.isPreventingPlayerRest(serverLevel(), (Player) (Object) this)
+                    (hostileEntity) -> hostileEntity.isPreventingPlayerRest(level(), (Player) (Object) this)
             );
 
             for (Monster entity : list)
